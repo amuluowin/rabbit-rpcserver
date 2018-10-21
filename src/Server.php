@@ -9,6 +9,7 @@
 namespace rabbit\rpcserver;
 
 use rabbit\core\ObjectFactory;
+use rabbit\parser\ParserInterface;
 
 /**
  * Class Server
@@ -41,11 +42,6 @@ class Server extends \rabbit\server\Server
      */
     private $response;
 
-    /**
-     * @var RpcParser
-     */
-    private $rpcPack;
-
     protected function createServer(): \Swoole\Server
     {
         return new swoole_server($this->host, $this->port, $this->type);
@@ -61,7 +57,11 @@ class Server extends \rabbit\server\Server
 
     public function onReceive(\Swoole\Server $server, int $fd, int $reactor_id, string $data): void
     {
-        $data = $this->rpcPack->decode($data);
+        /**
+         * @var ParserInterface $parser
+         */
+        $parser = ObjectFactory::get('rpc.parser');
+        $data = $parser->decode($data);
         $psrRequest = $this->request['class'];
         $psrResponse = $this->response['class'];
         $this->dispatcher->dispatch(new $psrRequest($data), new $psrResponse($server, $fd));

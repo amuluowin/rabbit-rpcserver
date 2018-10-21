@@ -14,6 +14,7 @@ use Psr\Http\Message\UriInterface;
 use rabbit\exception\NotSupportedException;
 use rabbit\helper\JsonHelper;
 use rabbit\web\MessageTrait;
+use rabbit\web\SwooleStream;
 use rabbit\web\Uri;
 
 /**

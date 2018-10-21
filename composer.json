@@ -1,22 +1,23 @@
 {
-    "name": "rabbit/rpcserver",
-    "description": "rabbit rpcserver",
-    "type": "library",
-    "require": {
-        "rabbit/framework": "dev-master",
-        "rabbit/server": "dev-master",
-        "rabbit/parser": "dev-master"
-    },
-    "license": "MIT",
-    "authors": [
-        {
-            "name": "albert",
-            "email": "63851587@qq.com"
-        }
-    ],
-    "autoload": {
-        "psr-4": {
-            "rabbit\\rpcserver\\": "src/"
-        }
+  "name": "rabbit/rpcserver",
+  "description": "rabbit rpcserver",
+  "type": "library",
+  "require": {
+    "rabbit/framework": "dev-master",
+    "rabbit/server": "dev-master",
+    "rabbit/parser": "dev-master",
+    "rabbit/socket": "dev-master"
+  },
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "albert",
+      "email": "63851587@qq.com"
     }
+  ],
+  "autoload": {
+    "psr-4": {
+      "rabbit\\rpcserver\\": "src/"
+    }
+  }
 }

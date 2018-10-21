@@ -38,6 +38,16 @@ class Response implements ResponseInterface
     private $server;
 
     /**
+     * @var int
+     */
+    private $statusCode = 200;
+
+    /**
+     * @var string
+     */
+    private $charset = 'utf-8';
+
+    /**
      * Response constructor.
      * @param \Swoole\Server $server
      * @param int $fd
@@ -49,23 +59,22 @@ class Response implements ResponseInterface
     }
 
     /**
-     * @return int|void
-     * @throws NotSupportedException
+     * @return int
      */
     public function getStatusCode()
     {
-        throw new NotSupportedException("can not call " . __METHOD__);
+        return $this->statusCode;
     }
 
     /**
      * @param int $code
      * @param string $reasonPhrase
-     * @return void|static
-     * @throws NotSupportedException
+     * @return mixed|static
      */
     public function withStatus($code, $reasonPhrase = '')
     {
-        throw new NotSupportedException("can not call " . __METHOD__);
+        $this->statusCode = (int)$code;
+        return $this;
     }
 
     /**
@@ -116,7 +125,7 @@ class Response implements ResponseInterface
             return $this;
         }
 
-        $this->stream = new SwooleStream($content);
+        $this->stream = $content;
         return $this;
     }
 
@@ -125,7 +134,34 @@ class Response implements ResponseInterface
      */
     public function send(): void
     {
-        $this->server->send($this->getBody()->getContents());
+        $this->server->send($this->fd, $this->stream);
+    }
+
+    /**
+     * @param $value
+     * @return bool
+     */
+    public function isArrayable($value): bool
+    {
+        return is_array($value) || $value instanceof Arrayable;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCharset(): string
+    {
+        return $this->charset;
+    }
+
+    /**
+     * @param string $charset
+     * @return Response
+     */
+    public function withCharset(string $charset): Response
+    {
+        $this->charset = $charset;
+        return $this;
     }
 
 }
