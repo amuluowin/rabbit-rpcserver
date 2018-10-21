@@ -44,6 +44,10 @@ class Request implements ServerRequestInterface
      */
     private $uri;
 
+    /**
+     * Request constructor.
+     * @param array $data
+     */
     public function __construct(array $data)
     {
         $this->uri = self::getUriFromGlobals($data);
@@ -150,7 +154,7 @@ class Request implements ServerRequestInterface
     /**
      *
      */
-    private function updateHostFromUri()
+    private function updateHostFromUri(): void
     {
         $host = $this->uri->getHost();
 
@@ -278,6 +282,10 @@ class Request implements ServerRequestInterface
         return $this;
     }
 
+    /**
+     * @param string $name
+     * @return $this|static
+     */
     public function withoutAttribute($name)
     {
         if (false === array_key_exists($name, $this->attributes)) {

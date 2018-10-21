@@ -9,7 +9,6 @@
 namespace rabbit\rpcserver;
 
 use rabbit\core\ObjectFactory;
-use rabbit\parser\MsgPackParser;
 
 /**
  * Class Server
@@ -43,9 +42,9 @@ class Server extends \rabbit\server\Server
     private $response;
 
     /**
-     * @var MsgPackParser
+     * @var RpcParser
      */
-    private $msgPack;
+    private $rpcPack;
 
     protected function createServer(): \Swoole\Server
     {
@@ -62,7 +61,7 @@ class Server extends \rabbit\server\Server
 
     public function onReceive(\Swoole\Server $server, int $fd, int $reactor_id, string $data): void
     {
-        $data = $this->msgPack->decode($data);
+        $data = $this->rpcPack->decode($data);
         $psrRequest = $this->request['class'];
         $psrResponse = $this->response['class'];
         $this->dispatcher->dispatch(new $psrRequest($data), new $psrResponse($server, $fd));

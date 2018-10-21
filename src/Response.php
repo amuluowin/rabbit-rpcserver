@@ -37,22 +37,41 @@ class Response implements ResponseInterface
      */
     private $server;
 
+    /**
+     * Response constructor.
+     * @param \Swoole\Server $server
+     * @param int $fd
+     */
     public function __construct(\Swoole\Server $server, int $fd)
     {
         $this->server = $server;
         $this->fd = $fd;
     }
 
+    /**
+     * @return int|void
+     * @throws NotSupportedException
+     */
     public function getStatusCode()
     {
         throw new NotSupportedException("can not call " . __METHOD__);
     }
 
+    /**
+     * @param int $code
+     * @param string $reasonPhrase
+     * @return void|static
+     * @throws NotSupportedException
+     */
     public function withStatus($code, $reasonPhrase = '')
     {
         throw new NotSupportedException("can not call " . __METHOD__);
     }
 
+    /**
+     * @return string|void
+     * @throws NotSupportedException
+     */
     public function getReasonPhrase()
     {
         throw new NotSupportedException("can not call " . __METHOD__);
@@ -61,7 +80,7 @@ class Response implements ResponseInterface
     /**
      * @return array
      */
-    public function getAttributes()
+    public function getAttributes(): array
     {
         return $this->attributes;
     }
@@ -81,7 +100,7 @@ class Response implements ResponseInterface
      * @param $value
      * @return Response
      */
-    public function withAttribute($name, $value)
+    public function withAttribute($name, $value): Response
     {
         $this->attributes[$name] = $value;
         return $this;
@@ -102,9 +121,9 @@ class Response implements ResponseInterface
     }
 
     /**
-     * 处理 Response 并发送数据
+     *
      */
-    public function send()
+    public function send(): void
     {
         $this->server->send($this->getBody()->getContents());
     }
