@@ -12,7 +12,6 @@ namespace rabbit\rpcserver;
 use Psr\Http\Message\ResponseInterface;
 use rabbit\exception\NotSupportedException;
 use rabbit\web\MessageTrait;
-use rabbit\web\SwooleStream;
 
 /**
  * Class Response
