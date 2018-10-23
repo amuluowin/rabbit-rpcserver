@@ -42,11 +42,19 @@ class Server extends \rabbit\server\Server
      */
     private $response;
 
+    /**
+     * @return \Swoole\Server
+     */
     protected function createServer(): \Swoole\Server
     {
         return new swoole_server($this->host, $this->port, $this->type);
     }
 
+    /**
+     * @param \Swoole\Server|null $server
+     * @throws \DI\DependencyException
+     * @throws \DI\NotFoundException
+     */
     protected function startServer(\Swoole\Server $server = null): void
     {
         parent::startServer($server);
@@ -55,6 +63,13 @@ class Server extends \rabbit\server\Server
         $server->start();
     }
 
+    /**
+     * @param \Swoole\Server $server
+     * @param int $fd
+     * @param int $reactor_id
+     * @param string $data
+     * @throws \Exception
+     */
     public function onReceive(\Swoole\Server $server, int $fd, int $reactor_id, string $data): void
     {
         /**

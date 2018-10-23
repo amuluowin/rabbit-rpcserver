@@ -51,7 +51,8 @@ class Request implements ServerRequestInterface
     public function __construct(array $data)
     {
         $this->uri = self::getUriFromGlobals($data);
-        $this->withQueryParams(isset($data['params']) ? $data['params'] : []);
+        $this->withQueryParams(isset($data['params']) ? $data['params'] : [])
+            ->withAttribute(AttributeEnum::TRACE_ATTRIBUTE, $data);
         if (isset($data['service']) && isset($data['method'])) {
             $this->withAttribute(AttributeEnum::ROUTER_ATTRIBUTE, $data['service'] . '::' . $data['method']);
         }
