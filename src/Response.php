@@ -10,9 +10,10 @@ namespace rabbit\rpcserver;
 
 
 use Psr\Http\Message\ResponseInterface;
+use rabbit\core\ObjectFactory;
 use rabbit\exception\NotSupportedException;
+use rabbit\rpcclient\parser\TcpParserInterface;
 use rabbit\web\MessageTrait;
-use rabbit\web\SwooleStream;
 
 /**
  * Class Response
@@ -134,6 +135,11 @@ class Response implements ResponseInterface
      */
     public function send(): void
     {
+        /**
+         * @var TcpParserInterface $parser
+         */
+        $parser = ObjectFactory::get('rpc.parser');
+        $this->stream = $parser->encode(['data' => $this->stream]);
         $this->server->send($this->fd, $this->stream);
     }
 

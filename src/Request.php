@@ -12,9 +12,8 @@ namespace rabbit\rpcserver;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\UriInterface;
 use rabbit\exception\NotSupportedException;
-use rabbit\helper\JsonHelper;
+use rabbit\server\AttributeEnum;
 use rabbit\web\MessageTrait;
-use rabbit\web\SwooleStream;
 use rabbit\web\Uri;
 
 /**
@@ -52,10 +51,10 @@ class Request implements ServerRequestInterface
     public function __construct(array $data)
     {
         $this->uri = self::getUriFromGlobals($data);
-        $this->stream = new SwooleStream(JsonHelper::encode($data['params']));
-
-        $this->withQueryParams(isset($data['query']) ? $data['query'] : [])
-            ->withParsedBody($data['params']);
+        $this->withQueryParams(isset($data['params']) ? $data['params'] : []);
+        if (isset($data['service']) && isset($data['method'])) {
+            $this->withAttribute(AttributeEnum::ROUTER_ATTRIBUTE, $data['service'] . '::' . $data['method']);
+        }
     }
 
     /**
@@ -139,14 +138,6 @@ class Request implements ServerRequestInterface
 
         if (isset($data['port'])) {
             $uri->withPort($data['port']);
-        }
-
-        if (isset($data['route'])) {
-            $uri->withPath($data['route']);
-        }
-
-        if (isset($data['query'])) {
-            $uri->withQuery($data['query']);
         }
 
         return $uri;

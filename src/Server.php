@@ -9,7 +9,7 @@
 namespace rabbit\rpcserver;
 
 use rabbit\core\ObjectFactory;
-use rabbit\parser\ParserInterface;
+use rabbit\rpcclient\parser\TcpParserInterface;
 
 /**
  * Class Server
@@ -58,7 +58,7 @@ class Server extends \rabbit\server\Server
     public function onReceive(\Swoole\Server $server, int $fd, int $reactor_id, string $data): void
     {
         /**
-         * @var ParserInterface $parser
+         * @var TcpParserInterface $parser
          */
         $parser = ObjectFactory::get('rpc.parser');
         $data = $parser->decode($data);
