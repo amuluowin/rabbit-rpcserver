@@ -36,9 +36,8 @@ class DefaultMiddleware implements MiddlewareInterface
         if (!array_key_exists($service, $serviceList)) {
             throw new \BadMethodCallException('can not call ' . strpos($service, '/') === 0 ? $service . '/' . $method : $service . '->' . $method);
         }
-
-        $controller = ObjectFactory::get($serviceList[$service], null, false);
-        if ($controller === null) {
+        
+        if (($controller = ObjectFactory::get($serviceList[$service], false)) === null) {
             throw new \BadMethodCallException('can not call ' . strpos($service, '/') === 0 ? $service . '/' . $method : $service . '->' . $method);
         }
         /**
