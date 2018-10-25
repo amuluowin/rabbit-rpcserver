@@ -9,7 +9,7 @@
 namespace rabbit\rpcserver;
 
 use rabbit\core\ObjectFactory;
-use rabbit\rpcclient\parser\TcpParserInterface;
+use rabbit\socket\TcpParserInterface;
 
 /**
  * Class Server

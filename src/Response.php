@@ -12,7 +12,7 @@ namespace rabbit\rpcserver;
 use Psr\Http\Message\ResponseInterface;
 use rabbit\core\ObjectFactory;
 use rabbit\exception\NotSupportedException;
-use rabbit\rpcclient\parser\TcpParserInterface;
+use rabbit\socket\TcpParserInterface;
 use rabbit\web\MessageTrait;
 
 /**
