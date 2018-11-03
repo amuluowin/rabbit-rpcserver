@@ -11,6 +11,7 @@ namespace rabbit\rpcserver;
 
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\UriInterface;
+use rabbit\core\Context;
 use rabbit\exception\NotSupportedException;
 use rabbit\server\AttributeEnum;
 use rabbit\web\MessageTrait;
@@ -51,8 +52,8 @@ class Request implements ServerRequestInterface
     public function __construct(array $data)
     {
         $this->uri = self::getUriFromGlobals($data);
-        $this->withQueryParams(isset($data['params']) ? $data['params'] : [])
-            ->withAttribute(AttributeEnum::TRACE_ATTRIBUTE, $data);
+        Context::set('collect', $data);
+        $this->withQueryParams(isset($data['params']) ? $data['params'] : []);
         if (isset($data['service']) && isset($data['method'])) {
             $this->withAttribute(AttributeEnum::ROUTER_ATTRIBUTE, $data['service'] . '::' . $data['method']);
         }
