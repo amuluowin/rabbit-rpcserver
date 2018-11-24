@@ -47,7 +47,7 @@ class Server extends \rabbit\server\Server
      */
     protected function createServer(): \Swoole\Server
     {
-        return new swoole_server($this->host, $this->port, $this->type);
+        return new \Swoole\Server($this->host, $this->port, $this->type);
     }
 
     /**
