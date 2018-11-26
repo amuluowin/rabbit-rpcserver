@@ -49,7 +49,7 @@ class Request implements ServerRequestInterface
      * Request constructor.
      * @param array $data
      */
-    public function __construct(array $data)
+    public function __construct(array $data, int $fd)
     {
         $this->uri = self::getUriFromGlobals($data);
         Context::set('collect', $data);
@@ -57,6 +57,7 @@ class Request implements ServerRequestInterface
         if (isset($data['service']) && isset($data['method'])) {
             $this->withAttribute(AttributeEnum::ROUTER_ATTRIBUTE, $data['service'] . '::' . $data['method']);
         }
+        $this->withAttribute(AttributeEnum::CONNECT_FD, $fd);
     }
 
     /**

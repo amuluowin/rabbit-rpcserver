@@ -79,7 +79,7 @@ class Server extends \rabbit\server\Server
         $data = $parser->decode($data);
         $psrRequest = $this->request['class'];
         $psrResponse = $this->response['class'];
-        $this->dispatcher->dispatch(new $psrRequest($data), new $psrResponse($server, $fd));
+        $this->dispatcher->dispatch(new $psrRequest($data, $fd), new $psrResponse($server, $fd));
     }
 
 }
