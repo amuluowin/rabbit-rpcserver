@@ -9,13 +9,14 @@
 namespace rabbit\rpcserver;
 
 use rabbit\core\ObjectFactory;
+use rabbit\server\AbstractTcpServer;
 use rabbit\socket\tcp\TcpParserInterface;
 
 /**
  * Class Server
  * @package rabbit\rpcserver
  */
-class Server extends \rabbit\server\Server
+class Server extends AbstractTcpServer
 {
     /**
      * @var string
@@ -28,11 +29,6 @@ class Server extends \rabbit\server\Server
     protected $port = 9503;
 
     /**
-     * @var int
-     */
-    protected $type = SWOOLE_PROCESS;
-
-    /**
      * @var string
      */
     private $request;
@@ -41,27 +37,6 @@ class Server extends \rabbit\server\Server
      * @var string
      */
     private $response;
-
-    /**
-     * @return \Swoole\Server
-     */
-    protected function createServer(): \Swoole\Server
-    {
-        return new \Swoole\Server($this->host, $this->port, $this->type);
-    }
-
-    /**
-     * @param \Swoole\Server|null $server
-     * @throws \DI\DependencyException
-     * @throws \DI\NotFoundException
-     */
-    protected function startServer(\Swoole\Server $server = null): void
-    {
-        parent::startServer($server);
-        $server->on('Receive', array($this, 'onReceive'));
-        $server->set(ObjectFactory::get('server.setting'));
-        $server->start();
-    }
 
     /**
      * @param \Swoole\Server $server
